@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TLW Schools - Fun Learning Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-orange: #F26522;
+            --light-yellow: #FFF200;
+            --dark-red: #BE1E2D;
+            --bg-color: #FFFDF0;
+            --card-bg: #FFFFFF;
+            --text-color: #4A4A4A;
+        }
+
+        * { box-sizing: border-box; font-family: 'Quicksand', 'Fredoka One', sans-serif; margin: 0; padding: 0; }
+        body { background-color: var(--bg-color); color: var(--text-color); padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        
+        header {
+            width: 100%; max-width: 800px; display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 30px; background: var(--card-bg); padding: 15px 25px; border-radius: 20px;
+            box-shadow: 0 8px 0px rgba(242, 101, 34, 0.15); border: 3px solid var(--primary-orange);
+        }
+        .logo-area { display: flex; align-items: center; gap: 15px; }
+        .logo-img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid var(--light-yellow); }
+        .site-title { font-family: 'Fredoka One', sans-serif; font-size: 28px; color: var(--primary-orange); text-shadow: 2px 2px 0px var(--light-yellow); }
+        
+        .portal-btn { background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 0 #388E3C; }
+        .container { width: 100%; max-width: 800px; background: var(--card-bg); border-radius: 30px; padding: 30px; box-shadow: 0 12px 0px rgba(0,0,0,0.05); border: 4px solid #E0E0E0; text-align: center; }
+        h2 { font-family: 'Fredoka One', sans-serif; color: var(--dark-red); margin-bottom: 20px; font-size: 26px; }
+        
+        .btn { background: var(--primary-orange); color: white; border: none; padding: 15px 30px; font-size: 20px; font-weight: bold; border-radius: 25px; cursor: pointer; box-shadow: 0 6px 0 var(--dark-red); transition: all 0.1s; margin: 10px; }
+        .btn:active { transform: translateY(6px); box-shadow: none; }
+        
+        input[type="text"], select, textarea { width: 80%; max-width: 500px; padding: 15px; font-size: 18px; border: 3px solid var(--light-yellow); border-radius: 15px; margin-bottom: 20px; outline: none; text-align: center; font-weight: bold; }
+        input[type="text"]:focus, textarea:focus { border-color: var(--primary-orange); }
+        
+        .subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-top: 20px; }
+        .subject-card { background: var(--light-yellow); border: 3px solid var(--primary-orange); padding: 25px 15px; border-radius: 20px; cursor: pointer; font-family: 'Fredoka One', sans-serif; font-size: 22px; color: var(--dark-red); box-shadow: 0 8px 0 var(--primary-orange); }
+        
+        .quiz-container-box { background: #F0FAFF; border: 3px dashed #2196F3; border-radius: 20px; padding: 30px 20px; margin: 20px 0; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .quiz-box { font-size: 48px; font-weight: bold; color: #1565C0; }
+        .audio-btn { background: #2196F3; color: white; border: none; width: 60px; height: 60px; border-radius: 50%; font-size: 24px; cursor: pointer; box-shadow: 0 4px 0 #1565C0; display: flex; align-items: center; justify-content: center; }
+        
+        .options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px; }
+        .option-btn { background: white; border: 3px solid #2196F3; padding: 20px; font-size: 24px; font-weight: bold; border-radius: 15px; cursor: pointer; box-shadow: 0 5px 0 #1565C0; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; }
+        th, td { border: 2px solid #E0E0E0; padding: 12px; text-align: center; }
+        th { background: var(--light-yellow); color: var(--dark-red); }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <img src="logo.jpg" alt="TLW Logo" class="logo-img" onerror="this.src='https://via.placeholder.com/70?text=TLW'">
+            <div class="site-title">TLW Schools</div>
+        </div>
+        <button class="portal-btn" id="portalToggleBtn" onclick="togglePortal()">👩‍🏫 Teacher Office</button>
+    </header>
+
+    <div class="container">
+        
+        <div id="studentSide">
+            <div id="loginStep">
+                <h2>Welcome to Fun Learning! 👋</h2>
+                <input type="text" id="studentNameInput" placeholder="🧒 Type Student Name Here..."><br>
+                
+                <p style="margin: 15px 0 5px 0; font-weight: bold; color: var(--primary-orange);">Paste Teacher's Lesson Code Below (Optional):</p>
+                <textarea id="importCodeInput" rows="3" placeholder="If teacher gave you a code, paste it here..."></textarea><br>
+                
+                <button class="btn" onclick="startLearning()">Let's Play! 🚀</button>
+            </div>
+
+            <div id="subjectStep" class="hidden">
+                <h2 id="welcomeMessage">Hello!</h2>
+                <p>Choose a subject to start your challenge:</p>
+                <div class="subject-grid">
+                    <div class="subject-card" onclick="selectSubject('Chinese')">🏮<br>Chinese</div>
+                    <div class="subject-card" onclick="selectSubject('Malay')">🇲🇾<br>Malay</div>
+                    <div class="subject-card" onclick="selectSubject('English')">🔤<br>English</div>
+                    <div class="subject-card" onclick="selectSubject('Math')">🔢<br>Math</div>
+                </div>
+                <button class="btn" style="background:#9E9E9E; box-shadow:0 6px 0 #616161; margin-top:30px;" onclick="logoutStudent()">⬅️ Back</button>
+            </div>
+
+            <div id="quizStep" class="hidden">
+                <h2 id="quizSubjectTitle">Quiz</h2>
+                <div class="quiz-container-box">
+                    <div class="quiz-box" id="questionDisplay">?</div>
+                    <button class="audio-btn" onclick="speakCurrentQuestion()">🔊</button>
+                </div>
+                <div class="options-grid" id="optionsContainer"></div>
+            </div>
+
+            <div id="resultStep" class="hidden">
+                <h2>🎉 Wonderful Job! 🎉</h2>
+                <p style="font-size: 22px; margin: 20px 0;" id="scoreDisplay">You finished the quiz!</p>
+                
+                <div style="background: #E8F5E9; padding: 15px; border-radius: 15px; border: 2px solid #4CAF50; margin-bottom: 25px;">
+                    <p style="font-weight: bold; color: #2E7D32; margin-bottom: 10px;">👇 Parents, click here to send results to Teacher! 👇</p>
+                    <button class="btn" style="background: #25D366; box-shadow: 0 6px 0 #128C7E; margin: 0;" onclick="sendResultToWhatsApp()">🟢 Send Report via WhatsApp</button>
+                </div>
+
+                <button class="btn" style="background: #2196F3; box-shadow: 0 6px 0 #1565C0;" onclick="backToSubjects()">Play Again</button>
+            </div>
+        </div>
+
+        <div id="teacherSide" class="hidden">
+            <h2>👩‍🏫 Teacher Dashboard</h2>
+            
+            <div style="background:#FFFDE7; padding:15px; border-radius:15px; border: 2px solid #FBC02D; margin-bottom: 20px; text-align: left;">
+                <h3 style="color:#F57F17; margin-bottom:5px;">📦 Step 2: Share Lesson Code to Parents</h3>
+                <p style="font-size: 14px; margin-bottom: 10px; color: #555;">After you finish modifying words below, click this button, copy the code, and blast it into your WhatsApp group!</p>
+                <button class="btn" style="font-size:14px; padding:10px 20px; background:#FBC02D; box-shadow:0 4px 0 #F57F17; margin:0 0 10px 0;" onclick="generateShareCode()">Generate & Copy Lesson Code 📋</button>
+                <textarea id="generatedCodeArea" style="width:100%; margin:0; font-size:12px;" rows="2" readonly placeholder="Your code will appear here..."></textarea>
+            </div>
+
+            <div style="text-align: left; margin-bottom: 20px;">
+                <label style="font-weight:bold;">Set Your WhatsApp Phone Number (To receive scores):</label><br>
+                <input type="text" id="teacherPhone" placeholder="e.g. 60123456789" style="width:100%; text-align:left; padding:10px; margin-top:5px;">
+            </div>
+
+            <div style="text-align: left; margin-bottom: 20px;">
+                <label style="font-weight:bold;">Select Subject to Modify:</label>
+                <select id="editSubjectSelect" onchange="loadQuestionsToEditor()" style="width:100%; margin-top:5px;">
+                    <option value="Chinese">Chinese (中文)</option>
+                    <option value="Malay">Malay (马来文)</option>
+                    <option value="English">English (英文)</option>
+                    <option value="Math">Math (数学)</option>
+                </select>
+            </div>
+
+            <div style="background:#F9F9F9; padding:15px; border-radius:10px; margin-bottom:20px; border:2px solid #E0E0E0; text-align:left;">
+                <h3 style="margin-bottom:10px; color:var(--primary-orange)">➕ Add New Word/Question</h3>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
+                    <input type="text" id="newQuestion" placeholder="Word/Question (e.g. 苹果)" style="width:100%; margin:0; padding:10px; font-size:14px;">
+                    <input type="text" id="newAnswer" placeholder="Correct Answer (e.g. Apple)" style="width:100%; margin:0; padding:10px; font-size:14px;">
+                    <input type="text" id="newWrong1" placeholder="Wrong Choice 1" style="width:100%; margin:0; padding:10px; font-size:14px;">
+                    <input type="text" id="newWrong2" placeholder="Wrong Choice 2" style="width:100%; margin:0; padding:10px; font-size:14px;">
+                    <input type="text" id="newWrong3" placeholder="Wrong Choice 3" style="width:100%; margin:0; padding:10px; font-size:14px;">
+                </div>
+                <button class="btn" style="font-size:14px; padding:8px 20px; box-shadow:0 3px 0 var(--dark-red); margin:0;" onclick="addQuestion()">Save Word</button>
+            </div>
+
+            <table id="questionsTable">
+                <thead>
+                    <tr><th>Word</th><th>Listen</th><th>Correct</th><th>Wrongs</th><th>Action</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <footer style="margin-top: 30px; color: #9E9E9E; font-size: 14px;">
+        &copy; 2026 TLW Schools Portal. Designed for Kids.
+    </footer>
+
+    <script>
+        const defaultQuestions = {
+            Chinese: [{ q: "苹果", a: "Apple", w: ["Cat", "Dog", "Car"] }],
+            Malay: [{ q: "Kucing", a: "Cat", w: ["Dog", "Bird", "Fish"] }],
+            English: [{ q: "Banana", a: "Yellow", w: ["Red", "Blue", "Green"] }],
+            Math: [{ q: "2 + 3 = ?", a: "5", w: ["4", "6", "3"] }]
+        };
+
+        let database = JSON.parse(localStorage.getItem('tlw_v2_db')) || defaultQuestions;
+        let teacherPhone = localStorage.getItem('tlw_teacher_phone') || "60123456789";
+
+        function saveDb() { localStorage.setItem('tlw_v2_db', JSON.stringify(database)); }
+        
+        let currentStudent = "";
+        let currentSubject = "";
+        let currentQuestionIndex = 0;
+        let activeQuizList = [];
+        let score = 0;
+        let isTeacherMode = false;
+
+        document.getElementById('teacherPhone').value = teacherPhone;
+        document.getElementById('teacherPhone').onchange = function() {
+            localStorage.setItem('tlw_teacher_phone', this.value.trim());
+        };
+
+        function speakText(text, subject) {
+            if (!('speechSynthesis' in window)) return;
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            if (subject === "Chinese") utterance.lang = "zh-CN";
+            else if (subject === "Malay") utterance.lang = "ms-MY";
+            else utterance.lang = "en-US";
+            utterance.rate = 0.85;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function speakCurrentQuestion() {
+            if (activeQuizList[currentQuestionIndex]) {
+                speakText(activeQuizList[currentQuestionIndex].q, currentSubject);
+            }
+        }
+
+        function startLearning() {
+            const nameInput = document.getElementById('studentNameInput').value.trim();
+            if(!nameInput) { alert("Please type student name! 🥰"); return; }
+            currentStudent = nameInput;
+
+            // 导入老师给的魔法课件代码
+            const importCode = document.getElementById('importCodeInput').value.trim();
+            if (importCode) {
+                try {
+                    const decoded = JSON.parse(atob(importCode));
+                    database = decoded;
+                    saveDb();
+                    alert("🎒 Lesson updated successfully from Teacher's Code!");
+                } catch(e) {
+                    alert("❌ Invalid lesson code. Please check again.");
+                    return;
+                }
+            }
+
+            document.getElementById('welcomeMessage').innerText = `Hello, ${currentStudent}! ✨`;
+            document.getElementById('loginStep').classList.add('hidden');
+            document.getElementById('subjectStep').classList.remove('hidden');
+        }
+
+        function logoutStudent() {
+            document.getElementById('subjectStep').classList.add('hidden');
+            document.getElementById('loginStep').classList.remove('hidden');
+        }
+
+        function selectSubject(subject) {
+            currentSubject = subject;
+            activeQuizList = [...database[subject]];
+            if(activeQuizList.length === 0) { alert("No words in this subject!"); return; }
+            activeQuizList.sort(() => Math.random() - 0.5);
+            currentQuestionIndex = 0;
+            score = 0;
+            document.getElementById('quizSubjectTitle').innerText = `${subject} Room 🎯`;
+            document.getElementById('subjectStep').classList.add('hidden');
+            document.getElementById('quizStep').classList.remove('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            if(currentQuestionIndex >= activeQuizList.length) {
+                document.getElementById('quizStep').classList.add('hidden');
+                document.getElementById('resultStep').classList.remove('hidden');
+                document.getElementById('scoreDisplay').innerText = `You scored ${score} / ${activeQuizList.length}!`;
+                return;
+            }
+            const qData = activeQuizList[currentQuestionIndex];
+            document.getElementById('questionDisplay').innerText = qData.q;
+            setTimeout(() => { speakText(qData.q, currentSubject); }, 300);
+
+            let options = [qData.a, ...qData.w].sort(() => Math.random() - 0.5);
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = "";
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "option-btn";
+                btn.innerText = opt;
+                btn.onclick = () => {
+                    if(opt === qData.a) { score++; alert("🎉 Correct! ⭐"); } 
+                    else { alert(`💡 Right answer was: ${qData.a}`); }
+                    currentQuestionIndex++;
+                    showQuestion();
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function sendResultToWhatsApp() {
+            const targetPhone = localStorage.getItem('tlw_teacher_phone') || "60123456789";
+            const message = `Hi Teacher! 🧒 *${currentStudent}* has completed the *${currentSubject}* quiz on TLW Schools Portal!\n\n🎯 *Result:* ${score} / ${activeQuizList.length} correct!\n⭐ *Keep it up!*`;
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/${targetPhone}?text=${encodedMessage}`, '_blank');
+        }
+
+        function backToSubjects() {
+            document.getElementById('resultStep').classList.add('hidden');
+            document.getElementById('subjectStep').classList.remove('hidden');
+        }
+
+        // 老师后台模块
+        function togglePortal() {
+            const password = prompt("Enter Teacher Password:");
+            if(password === "1234") {
+                isTeacherMode = !isTeacherMode;
+                document.getElementById('studentSide').classList.toggle('hidden', isTeacherMode);
+                document.getElementById('teacherSide').classList.toggle('hidden', !isTeacherMode);
+                document.getElementById('portalToggleBtn').innerText = isTeacherMode ? "📱 Student View" : "👩‍🏫 Teacher Office";
+                if (isTeacherMode) loadQuestionsToEditor();
+            } else if (password !== null) { alert("Wrong password! Hint: 1234"); }
+        }
+
+        function generateShareCode() {
+            const b64Str = btoa(JSON.stringify(database));
+            document.getElementById('generatedCodeArea').value = b64Str;
+            document.getElementById('generatedCodeArea').select();
+            document.execCommand('copy');
+            alert("📋 Lesson code copied! Paste and send it into your WhatsApp group!");
+        }
+
+        function loadQuestionsToEditor() {
+            const sub = document.getElementById('editSubjectSelect').value;
+            const tbody = document.querySelector('#questionsTable tbody');
+            tbody.innerHTML = "";
+            database[sub].forEach((item, idx) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td><b>${item.q}</b></td><td><button onclick="speakText('${item.q}', '${sub}')">🔊</button></td><td style='color:green'>${item.a}</td><td style='color:#777;font-size:12px'>${item.w.join(',')}</td><td><button onclick="deleteQuestion('${sub}', ${idx})">❌</button></td>`;
+                tbody.appendChild(row);
+            });
+        }
+
+        function addQuestion() {
+            const sub = document.getElementById('editSubjectSelect').value;
+            const q = document.getElementById('newQuestion').value.trim();
+            const a = document.getElementById('newAnswer').value.trim();
+            const w1 = document.getElementById('newWrong1').value.trim();
+            const w2 = document.getElementById('newWrong2').value.trim();
+            const w3 = document.getElementById('newWrong3').value.trim();
+            if(!q || !a || !w1 || !w2 || !w3) { alert("Fill all blanks!"); return; }
+            database[sub].push({ q: q, a: a, w: [w1, w2, w3] });
+            saveDb(); loadQuestionsToEditor();
+            document.getElementById('newQuestion').value = ""; document.getElementById('newAnswer').value = "";
+            document.getElementById('newWrong1').value = ""; document.getElementById('newWrong2').value = ""; document.getElementById('newWrong3').value = "";
+        }
+
+        function deleteQuestion(sub, idx) {
+            if(confirm("Delete?")) { database[sub].splice(idx, 1); saveDb(); loadQuestionsToEditor(); }
+        }
+    </script>
+</body>
+</html>
